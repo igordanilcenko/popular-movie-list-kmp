@@ -1,14 +1,37 @@
-*.iml
-.gradle/
-local.properties
-/.idea
+# OS / editor
 .DS_Store
-/build
-captures
-.externalNativeBuild
-.cxx
+*.swp
+*.swo
+*.tmp
+*.log
 
-# iOS
-iosApp/iosApp.xcodeproj/xcuserdata
-iosApp/iosApp.xcworkspace/xcuserdata
-iosApp/iosApp.xcworkspace/xcshareddata/swiftpm
+# JetBrains / Android Studio
+.idea/
+*.iml
+.kotlin/
+
+# Gradle / Kotlin build outputs
+.gradle/
+build/
+**/build/
+out/
+
+# Android local/dev files
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# iOS / Xcode generated files
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+iosApp/build/
+Pods/
+.symlinks/
