@@ -144,6 +144,17 @@ actual SQL queries alongside cache and fallback logic.
 
 ---
 
+## CI
+
+Every pull request to `main` runs two GitHub Actions checks:
+
+| Workflow | What it does |
+|---|---|
+| **Unit Tests** | Runs shared repository tests (`androidHostTest`) and Android ViewModel tests (`testDebugUnitTest`) |
+| **Lint** | Runs Android lint via `lintDebug`; uploads HTML report as artifact |
+
+---
+
 ## License
 
 ```
