@@ -115,6 +115,35 @@ If the internet call fails, the app falls back to data previously saved in the d
 
 ---
 
+## Testing
+
+| Layer | Module | Type | Tools |
+|---|---|---|---|
+| Screen UI (loading / error / content states) | `androidApp/feature/movies` | Compose instrumented tests | ui-test-junit4 · createComposeRule |
+| ViewModel (MVI state transitions) | `androidApp/feature/movies` | JVM unit tests | JUnit 4 · MockK · coroutines-test · Turbine |
+| Repository (cache / offline logic) | `shared/feature/movies` | JVM unit tests | JUnit 4 · MockK · coroutines-test · SQLDelight in-memory driver |
+
+**Compose UI tests** call screen content composables directly with a hand-crafted `UiState` – no
+ViewModel, no Koin, no network. Each test is a pure UI assertion.
+
+**ViewModel tests** verify `UiState` transitions including intermediate `Loading` states captured
+with Turbine – confirming that states are emitted in the right order, not just that the final state
+is correct.
+
+**Repository tests** focus on non-obvious behaviour: in-memory cache hits that prevent duplicate
+network calls, SQLDelight offline fallback, pagination accumulation across pages, and the guard that
+rethrows when offline and the database is also empty. Tests use a real in-memory SQLDelight database
+(`JdbcSqliteDriver.IN_MEMORY`) for the persistence layer and MockK for the network API — verifying
+actual SQL queries alongside cache and fallback logic.
+
+```bash
+./gradlew :androidApp:feature:movies:connectedDebugAndroidTest  # UI tests (device required)
+./gradlew :androidApp:feature:movies:testDebugUnitTest          # ViewModel unit tests
+./gradlew :shared:feature:movies:testAndroidHostTest            # repository unit tests
+```
+
+---
+
 ## License
 
 ```
