@@ -1,0 +1,17 @@
+CREATE TABLE ReviewEntity (
+    movieId INTEGER NOT NULL,
+    id TEXT NOT NULL PRIMARY KEY,
+    author TEXT NOT NULL,
+    content TEXT NOT NULL,
+    sortOrder INTEGER NOT NULL
+);
+
+getAll:
+SELECT * FROM ReviewEntity WHERE movieId = ? ORDER BY sortOrder ASC;
+
+insertReview:
+INSERT INTO ReviewEntity(movieId, id, author, content, sortOrder)
+VALUES (?, ?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM ReviewEntity WHERE movieId = ?;

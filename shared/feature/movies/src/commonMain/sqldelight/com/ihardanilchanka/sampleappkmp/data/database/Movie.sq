@@ -1,0 +1,22 @@
+CREATE TABLE MovieEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    posterPath TEXT,
+    overview TEXT NOT NULL,
+    releaseDate TEXT,
+    title TEXT NOT NULL,
+    backdropPath TEXT,
+    voteCount INTEGER NOT NULL,
+    voteAverage REAL NOT NULL,
+    genreIds TEXT NOT NULL,
+    sortOrder INTEGER NOT NULL
+);
+
+getAll:
+SELECT * FROM MovieEntity ORDER BY sortOrder ASC;
+
+insertMovie:
+INSERT INTO MovieEntity(id, posterPath, overview, releaseDate, title, backdropPath, voteCount, voteAverage, genreIds, sortOrder)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM MovieEntity;

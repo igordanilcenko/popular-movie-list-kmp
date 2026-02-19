@@ -1,0 +1,7 @@
+<resources>
+    <string name="state_view_error_default_title">An error occurred</string>
+    <string name="state_view_error_default_message">Please try again later</string>
+    <string name="state_view_error_no_internet_title">No internet available</string>
+    <string name="state_view_error_no_internet_message">Check your internet connection and try again</string>
+    <string name="state_view_reload">Reload</string>
+</resources>
