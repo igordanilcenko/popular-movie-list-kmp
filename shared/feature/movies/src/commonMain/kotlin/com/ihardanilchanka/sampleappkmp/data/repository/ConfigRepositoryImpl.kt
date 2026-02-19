@@ -1,8 +1,8 @@
 package com.ihardanilchanka.sampleappkmp.data.repository
 
 import com.ihardanilchanka.sampleappkmp.ApiConfig
-import com.ihardanilchanka.sampleappkmp.data.MoviesRestInterface
 import com.ihardanilchanka.sampleappkmp.data.model.ImageConfigDto
+import com.ihardanilchanka.sampleappkmp.data.network.MoviesApi
 import com.ihardanilchanka.sampleappkmp.domain.model.ImageConfig
 import com.ihardanilchanka.sampleappkmp.domain.repository.ConfigRepository
 import com.russhwolf.settings.Settings
@@ -10,7 +10,7 @@ import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 
 class ConfigRepositoryImpl(
-    private val moviesRestInterface: MoviesRestInterface,
+    private val moviesApi: MoviesApi,
     private val json: Json,
     private val settings: Settings,
 ) : ConfigRepository {
@@ -19,7 +19,7 @@ class ConfigRepositoryImpl(
 
     override suspend fun loadConfig() = imageConfigCache
         ?: try {
-            moviesRestInterface.getConfiguration(ApiConfig.API_KEY).imageConfigDto
+            moviesApi.getConfiguration(ApiConfig.API_KEY).imageConfigDto
                 .also { saveImageConfig(it) }
         } catch (e: IOException) {
             getImageConfig() ?: throw e

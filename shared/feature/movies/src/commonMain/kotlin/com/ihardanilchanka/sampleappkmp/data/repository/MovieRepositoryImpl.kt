@@ -1,11 +1,11 @@
 package com.ihardanilchanka.sampleappkmp.data.repository
 
 import com.ihardanilchanka.sampleappkmp.ApiConfig
-import com.ihardanilchanka.sampleappkmp.data.MoviesRestInterface
 import com.ihardanilchanka.sampleappkmp.data.database.MovieEntity
 import com.ihardanilchanka.sampleappkmp.data.database.MoviesDatabase
 import com.ihardanilchanka.sampleappkmp.data.database.SimilarMovieEntity
 import com.ihardanilchanka.sampleappkmp.data.model.MovieDto
+import com.ihardanilchanka.sampleappkmp.data.network.MoviesApi
 import com.ihardanilchanka.sampleappkmp.domain.model.Movie
 import com.ihardanilchanka.sampleappkmp.domain.model.RawMovie
 import com.ihardanilchanka.sampleappkmp.domain.repository.MovieRepository
@@ -15,7 +15,7 @@ import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 
 class MovieRepositoryImpl(
-    private val moviesRestInterface: MoviesRestInterface,
+    private val moviesApi: MoviesApi,
     private val database: MoviesDatabase,
 ) : MovieRepository {
 
@@ -36,7 +36,7 @@ class MovieRepositoryImpl(
     override suspend fun loadSimilarMovieList(movieId: Int) = similarMoviesCache[movieId] ?: try {
         simulateNetworkDelay()
 
-        val dtos = moviesRestInterface.getSimilarMovieList(movieId, ApiConfig.API_KEY).movies
+        val dtos = moviesApi.getSimilarMovieList(movieId, ApiConfig.API_KEY).movies
         database.similarMovieQueries.deleteAll(movieId.toLong())
         dtos.forEachIndexed { index, dto ->
             insertSimilarMovie(movieId, dto, index)
@@ -57,7 +57,7 @@ class MovieRepositoryImpl(
 
         simulateNetworkDelay()
 
-        val dtos = moviesRestInterface.getPopularMovieList(ApiConfig.API_KEY, 1).movies
+        val dtos = moviesApi.getPopularMovieList(ApiConfig.API_KEY, 1).movies
 
         database.movieQueries.deleteAll()
         dtos.forEachIndexed { index, dto -> insertMovie(dto, index) }
@@ -74,7 +74,7 @@ class MovieRepositoryImpl(
         popularMoviesCache.addAll(
             try {
                 val dtos =
-                    moviesRestInterface.getPopularMovieList(ApiConfig.API_KEY, currentPage).movies
+                    moviesApi.getPopularMovieList(ApiConfig.API_KEY, currentPage).movies
                 if (currentPage == 1) {
                     database.movieQueries.deleteAll()
                     dtos.forEachIndexed { index, dto -> insertMovie(dto, index) }
